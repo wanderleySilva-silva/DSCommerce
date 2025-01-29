@@ -3,6 +3,7 @@ package com.devsuperior.dscommerce.entities;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,16 +20,16 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String name;
-	
+
 	@Column(unique = true)
 	private String email;
-	
+
 	private String phone;
-	
+
 	private LocalDate birthDate;
-	
+
 	private String password;
 
 	@OneToMany(mappedBy = "client")
@@ -98,6 +99,23 @@ public class User {
 
 	public List<Order> getOrders() {
 		return orders;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(id, other.id);
 	}
 
 }
