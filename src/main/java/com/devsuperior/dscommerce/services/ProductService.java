@@ -29,17 +29,24 @@ public class ProductService {
 		return productRepository.findAll(pageable).map(prod -> new ProductDTO(prod));
 	}
 	
+	@Transactional
 	public ProductDTO create(ProductDTO productDTO) {
 		Product product = productDTO.converteToEntity();
 		productRepository.save(product);
 		return new ProductDTO(product);
 	}
 	
+	@Transactional
 	public ProductDTO update(Long id, ProductDTO productDTO) {
 		Product productEntity = productRepository.findById(id).get();
 		productDTO.converteToEntityUpdate(productEntity);
 		productRepository.save(productEntity);
 		
 		return new ProductDTO(productEntity);
+	}
+	
+	@Transactional
+	public void delete(Long id) {
+		productRepository.deleteById(id);
 	}
 }
