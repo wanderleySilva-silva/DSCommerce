@@ -31,14 +31,22 @@ public class ProductDTO {
 	
 	public Product converteToEntity() {
 		Product product = new Product();
-		product.setName(name);
-		product.setDescription(description);
-		product.setPrice(price);
-		product.setImgUrl(imgUrl);
-		
+		copyDtoToEntity(product);
 		return product;
 	}
 
+	public Product converteToEntityUpdate(Product product) {
+		copyDtoToEntity(product);
+		return product;
+	}
+	
+	private void copyDtoToEntity(Product product) {
+		product.setName(name);
+		product.setDescription(description);
+		product.setImgUrl(imgUrl);
+		product.setPrice(price);
+	}
+		
 	public Long getId() {
 		return id;
 	}

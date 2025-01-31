@@ -34,4 +34,12 @@ public class ProductService {
 		productRepository.save(product);
 		return new ProductDTO(product);
 	}
+	
+	public ProductDTO update(Long id, ProductDTO productDTO) {
+		Product productEntity = productRepository.findById(id).get();
+		productDTO.converteToEntityUpdate(productEntity);
+		productRepository.save(productEntity);
+		
+		return new ProductDTO(productEntity);
+	}
 }
