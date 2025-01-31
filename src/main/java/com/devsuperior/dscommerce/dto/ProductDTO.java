@@ -28,6 +28,16 @@ public class ProductDTO {
 		price = entity.getPrice();
 		imgUrl = entity.getImgUrl();
 	}
+	
+	public Product converteToEntity() {
+		Product product = new Product();
+		product.setName(name);
+		product.setDescription(description);
+		product.setPrice(price);
+		product.setImgUrl(imgUrl);
+		
+		return product;
+	}
 
 	public Long getId() {
 		return id;

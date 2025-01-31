@@ -22,10 +22,16 @@ public class ProductService {
 	public ProductDTO findById(Long id) {
 		Product product = productRepository.findById(id).get();
 		return new ProductDTO(product);
-		
 	}
 	
+	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAll(Pageable pageable) {
 		return productRepository.findAll(pageable).map(prod -> new ProductDTO(prod));
+	}
+	
+	public ProductDTO create(ProductDTO productDTO) {
+		Product product = productDTO.converteToEntity();
+		productRepository.save(product);
+		return new ProductDTO(product);
 	}
 }
