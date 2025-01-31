@@ -1,5 +1,7 @@
 package com.devsuperior.dscommerce.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,5 +23,9 @@ public class ProductService {
 		Product product = productRepository.findById(id).get();
 		return new ProductDTO(product);
 		
+	}
+	
+	public Page<ProductDTO> findAll(Pageable pageable) {
+		return productRepository.findAll(pageable).map(prod -> new ProductDTO(prod));
 	}
 }
