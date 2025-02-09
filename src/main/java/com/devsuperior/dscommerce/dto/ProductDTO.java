@@ -1,5 +1,9 @@
 package com.devsuperior.dscommerce.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.devsuperior.dscommerce.entities.Category;
 import com.devsuperior.dscommerce.entities.Product;
 
 import jakarta.validation.constraints.NotBlank;
@@ -20,7 +24,10 @@ public class ProductDTO {
 	
 	@Positive(message = "O preço deve ser positivo")
 	private Double price;
+	
 	private String imgUrl;
+	
+	private List<CategoryDTO> categories = new ArrayList<>();
 	
 	public ProductDTO() {
 		
@@ -40,24 +47,10 @@ public class ProductDTO {
 		description = entity.getDescription();
 		price = entity.getPrice();
 		imgUrl = entity.getImgUrl();
-	}
-	
-	public Product converteToEntity() {
-		Product product = new Product();
-		copyDtoToEntity(product);
-		return product;
-	}
-
-	public Product converteToEntityUpdate(Product product) {
-		copyDtoToEntity(product);
-		return product;
-	}
-	
-	private void copyDtoToEntity(Product product) {
-		product.setName(name);
-		product.setDescription(description);
-		product.setImgUrl(imgUrl);
-		product.setPrice(price);
+		
+		for(Category cat : entity.getCategories()) {
+			categories.add(new CategoryDTO(cat));
+		}
 	}
 		
 	public Long getId() {
@@ -78,6 +71,10 @@ public class ProductDTO {
 
 	public String getImgUrl() {
 		return imgUrl;
+	}
+	
+	public List<CategoryDTO> getCategories() {
+		return categories;
 	}
 
 }
