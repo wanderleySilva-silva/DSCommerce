@@ -1,5 +1,6 @@
 package com.devsuperior.dscommerce.services;
 
+import com.devsuperior.dscommerce.dto.ProductMinDTO;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,8 +38,8 @@ public class ProductService {
 	}
 
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> findAll(String name, Pageable pageable) {
-		return productRepository.searchByName(name, pageable).map(prod -> new ProductDTO(prod));
+	public Page<ProductMinDTO> findAll(String name, Pageable pageable) {
+		return productRepository.searchByName(name, pageable).map(prod -> new ProductMinDTO(prod));
 	}
 
 	@Transactional
