@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,8 +28,11 @@ import jakarta.validation.Valid;
 @RequestMapping(path = "/products")
 public class ProductController {
 
-	@Autowired
 	private ProductService productService;
+
+	public ProductController(ProductService productService){
+		this.productService = productService;
+	}
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
@@ -40,6 +44,7 @@ public class ProductController {
 		return ResponseEntity.status(HttpStatus.OK).body(productService.findAll(name, pageable));
 	}
 
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping
 	public ResponseEntity<ProductDTO> create(@RequestBody @Valid ProductDTO productDTO) {
 		ProductDTO newProductDTO = productService.create(productDTO);
@@ -49,14 +54,16 @@ public class ProductController {
 
 		return ResponseEntity.created(uri).body(newProductDTO);
 	}
-	
+
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody @Valid ProductDTO productDTO) {
 		ProductDTO newProductDTO = productService.update(id, productDTO);
 
 		return ResponseEntity.ok(newProductDTO);
 	}
-	
+
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		productService.delete(id);
