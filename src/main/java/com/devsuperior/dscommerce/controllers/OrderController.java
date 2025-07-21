@@ -1,13 +1,8 @@
 package com.devsuperior.dscommerce.controllers;
 
 import com.devsuperior.dscommerce.dto.OrderDTO;
-import com.devsuperior.dscommerce.dto.ProductDTO;
-import com.devsuperior.dscommerce.dto.ProductMinDTO;
 import com.devsuperior.dscommerce.services.OrderService;
-import com.devsuperior.dscommerce.services.ProductService;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,9 +21,20 @@ public class OrderController {
 		this.orderService = orderService;
 	}
 
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<OrderDTO> findById(@PathVariable Long id) {
 		return ResponseEntity.status(HttpStatus.OK).body(orderService.findById(id));
+	}
+
+	@PreAuthorize("hasRole('ROLE_CLIENT')")
+	@PostMapping
+	public ResponseEntity<OrderDTO> create(@RequestBody @Valid OrderDTO orderDTO) {
+		OrderDTO newOrderDTO = orderService.create(orderDTO);
+
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newOrderDTO.getId())
+				.toUri();
+
+		return ResponseEntity.created(uri).body(newOrderDTO);
 	}
 }
