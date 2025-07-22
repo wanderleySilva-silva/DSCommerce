@@ -24,8 +24,6 @@ public class CategoryController {
 	
 	@GetMapping
 	public ResponseEntity<List<CategoryDTO>> findAll(){
-		
 		return ResponseEntity.status(HttpStatus.OK).body(categoryService.findAll());
 	}
-
 }

@@ -20,5 +20,4 @@ public class CategoryService {
 
 		return categoryRepository.findAll().stream().map(c -> new CategoryDTO(c)).toList();
 	}
-
 }
